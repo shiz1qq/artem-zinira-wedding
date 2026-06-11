@@ -77,6 +77,7 @@ function PlaceCard({ emoji, title, time, link, color }) {
 
 export default function Home() {
   const [name, setName] = useState("");
+  const [attendance, setAttendance] = useState("Смогу присутствовать");
   const [loading, setLoading] = useState(false);
 
   async function sendRSVP() {
@@ -84,11 +85,13 @@ export default function Home() {
 
     setLoading(true);
 
-    const text = `
-💌 Новое подтверждение!
+   const text = `
+💌 Новое подтверждение
 
 👤 Имя: ${name}
-✅ Будет на свадьбе Артема и Зиниры
+
+📍 Ответ:
+${attendance}
 `;
 
     await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
@@ -106,73 +109,167 @@ export default function Home() {
     alert("Спасибо! Мы вас ждем 💖");
     setName("");
   }
+const sendTelegram = async (e) => {
 
+  e.preventDefault();
+
+  const TOKEN = process.env.NEXT_PUBLIC_BOT_TOKEN;
+  const CHAT_ID = process.env.NEXT_PUBLIC_CHAT_ID;
+
+  const text = `
+💌 Новое подтверждение
+
+👤 Имя: ${name}
+
+📍 Ответ:
+${attendance}
+`;
+
+  await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text,
+    }),
+  });
+
+  alert("Ваш ответ отправлен ✨");
+
+};
   return (
     <main className="snap-y snap-mandatory h-screen overflow-y-scroll bg-[#f5f1eb] text-[#2d2d2d]">
 
-    {/* HERO */}
+ 
+{/* HERO */}
 
-<section className="snap-start min-h-screen relative overflow-hidden flex flex-col items-center justify-center px-6 text-center bg-[#f5f1eb]">
+<section className="snap-start min-h-screen relative overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 text-center bg-[#f5f1eb]">
 
   {/* DECOR */}
 
-  <div className="absolute top-10 left-10 text-pink-400 text-6xl rotate-12">
+  <div className="absolute top-8 left-4 sm:left-10 text-pink-400 text-4xl sm:text-6xl rotate-12">
     ✦
   </div>
 
-  <div className="absolute bottom-20 right-10 text-blue-400 text-5xl -rotate-12">
+  <div className="absolute bottom-20 right-4 sm:right-10 text-blue-400 text-4xl sm:text-5xl -rotate-12">
     ✦
   </div>
 
-  <div className="absolute top-40 right-20 text-yellow-400 text-4xl">
+  <div className="absolute top-40 right-10 sm:right-20 text-yellow-400 text-3xl sm:text-4xl">
     ♥
   </div>
+{/* GROOM */}
 
-  {/* GROOM */}
+<motion.div
+  initial={{ opacity: 0, x: -100, rotate: -15 }}
+  animate={{
+    opacity: 1,
+    x: 0,
+    rotate: [-8, -5, -8],
+    y: [0, -10, 0]
+  }}
+  transition={{
+    duration: 6,
+    repeat: Infinity,
+    ease: "easeInOut"
+  }}
+  whileHover={{
+    scale: 1.05,
+    rotate: -4
+  }}
+  className="
+    absolute
+    left-1 sm:left-6 md:left-10
+    bottom-6 md:bottom-10
+    z-20
+    cursor-pointer
+  "
+>
 
-  <motion.div
-    initial={{ opacity: 0, x: -100, rotate: -15 }}
-    animate={{ opacity: 1, x: 0, rotate: -8 }}
-    transition={{ duration: 1 }}
-    className="absolute left-2 md:left-10 bottom-10 z-20"
-  >
-
-    <div className="absolute -top-8 left-2 text-blue-500 text-3xl font-black rotate-[-8deg]">
-      жених
-    </div>
-
-    <div className="bg-white p-3 rounded-[35px] shadow-2xl rotate-[-8deg]">
-
-      <img
-        src="/groom.jpg"
-        alt="Артем"
-        className="w-40 md:w-56 rounded-[25px]"
-      />
-
-    </div>
-
-  </motion.div>
-
-  {/* BRIDE */}
-
-  <motion.div
-    initial={{ opacity: 0, x: 100, rotate: 15 }}
-    animate={{ opacity: 1, x: 0, rotate: 8 }}
-    transition={{ duration: 1 }}
-    className="absolute right-2 md:right-10 top-20 z-20"
-  >
-
-    <div className="absolute -top-8 right-2 text-pink-500 text-3xl font-black rotate-[8deg]">
-      невеста
-    </div>
+  <div className="
+    bg-white
+    p-2 sm:p-3
+    rounded-[28px]
+    sm:rounded-[35px]
+    shadow-2xl
+    rotate-[-8deg]
+  ">
 
     <img
-      src="/bride.png"
-      alt="Зинира"
-      className="w-44 md:w-64 drop-shadow-2xl"
+      src="/groom.jpg"
+      alt="Артем"
+      className="
+        w-24
+        sm:w-36
+        md:w-56
+        rounded-[20px]
+        sm:rounded-[25px]
+      "
     />
 
-  </motion.div>
+  </div>
+
+  <div className="
+    absolute
+    -top-7
+    left-2
+    text-blue-500
+    text-xl
+    sm:text-3xl
+    font-black
+    rotate-[-8deg]
+  ">
+    жених
+  </div>
+
+</motion.div>
+ 
+ {/* BRIDE */}
+
+<motion.div
+  initial={{ opacity: 0, x: 100, rotate: 15 }}
+  animate={{
+    opacity: 1,
+    x: 0,
+    rotate: [8, 4, 8],
+    y: [0, 12, 0]
+  }}
+  transition={{
+    duration: 7,
+    repeat: Infinity,
+    ease: "easeInOut"
+  }}
+  whileHover={{
+    scale: 1.05,
+    rotate: 3
+  }}
+  className="
+    absolute
+    right-1 sm:right-4 md:right-10
+    top-24 md:top-20
+    z-20
+    cursor-pointer
+  "
+>
+
+  <div className="absolute -top-7 right-1 text-pink-500 text-xl sm:text-3xl font-black rotate-[8deg]">
+    невеста
+  </div>
+
+  <img
+    src="/bride.png"
+    alt="Зинира"
+    className="
+      w-28
+      sm:w-40
+      md:w-64
+      drop-shadow-2xl
+    "
+  />
+
+</motion.div>
 
   {/* TEXT */}
 
@@ -180,7 +277,15 @@ export default function Home() {
     initial={{ opacity: 0, y: 40 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 1 }}
-    className="text-5xl md:text-8xl font-black leading-tight z-10"
+    className="
+      text-4xl
+      sm:text-5xl
+      md:text-8xl
+      font-black
+      leading-tight
+      z-10
+      mt-20
+    "
   >
     <span className="text-blue-500">Мы</span>{" "}
     <span className="text-pink-500">женимся!</span>
@@ -190,20 +295,78 @@ export default function Home() {
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ delay: 0.5 }}
-    className="mt-8 text-xl md:text-2xl max-w-2xl leading-relaxed z-10"
+    className="
+      mt-6
+      text-base
+      sm:text-lg
+      md:text-2xl
+      max-w-2xl
+      leading-relaxed
+      z-10
+      px-4
+    "
   >
     Дорогие и близкие!
     <br />
     Приглашаем разделить этот особенный день вместе с нами
   </motion.p>
 
-  <div className="mt-10 text-5xl font-black text-pink-500 z-10">
+  {/* NAMES */}
+
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ delay: 0.3 }}
+    className="mt-8 z-10"
+  >
+
+    <div className="text-lg sm:text-2xl text-gray-500 tracking-[0.25em] uppercase">
+      wedding day
+    </div>
+
+    <h2 className="
+      text-5xl
+      sm:text-6xl
+      md:text-8xl
+      font-black
+      leading-none
+      mt-4
+    ">
+
+      <span className="text-blue-500 block rotate-[-2deg]">
+        Артем
+      </span>
+
+      <span className="text-pink-400 text-4xl sm:text-5xl md:text-7xl block my-2">
+        &
+      </span>
+
+      <span className="text-pink-500 block rotate-[2deg]">
+        Зинира
+      </span>
+
+    </h2>
+
+  </motion.div>
+
+  {/* DATE */}
+
+  <div className="
+    mt-8
+    text-3xl
+    sm:text-4xl
+    md:text-5xl
+    font-black
+    text-pink-500
+    z-10
+  ">
     14 августа 2026
   </div>
 
   <Countdown />
 
 </section>
+
 {/* NAMES */}
 
 <section className="snap-start min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
@@ -348,7 +511,104 @@ export default function Home() {
           <h2 className="text-5xl font-black text-center mb-8">
             RSVP
           </h2>
+ <form
+  onSubmit={sendTelegram}
+  className="space-y-5 mt-10"
+>
 
+  <input
+    type="text"
+    placeholder="Ваше имя"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+    className="
+      w-full
+      p-4
+      rounded-2xl
+      border
+      outline-none
+      text-black
+    "
+    required
+  />
+
+  {/* ATTEND */}
+
+  <select
+    value={attendance}
+    onChange={(e) => setAttendance(e.target.value)}
+    className="
+      w-full
+      p-4
+      rounded-2xl
+      border
+      outline-none
+      text-black
+    "
+  >
+    <option>Смогу присутствовать</option>
+    <option>К сожалению не смогу</option>
+  </select>
+
+  {/* EVENTS */}
+
+  <div className="bg-white rounded-3xl p-5 border">
+
+    <div className="font-bold mb-4 text-lg">
+      На каких мероприятиях вы будете?
+    </div>
+
+    <label className="flex gap-3 mb-3">
+      <input type="checkbox" />
+      <span>Никах</span>
+    </label>
+
+    <label className="flex gap-3 mb-3">
+      <input type="checkbox" />
+      <span>ЗАГС</span>
+    </label>
+
+    <label className="flex gap-3">
+      <input type="checkbox" />
+      <span>Кафе</span>
+    </label>
+
+  </div>
+
+  {/* WISHES */}
+
+  <textarea
+    placeholder="Ваши пожелания для нас ✨"
+    rows="4"
+    className="
+      w-full
+      p-4
+      rounded-2xl
+      border
+      outline-none
+      text-black
+      resize-none
+    "
+  />
+
+  <button
+    type="submit"
+    className="
+      w-full
+      bg-black
+      text-white
+      py-4
+      rounded-2xl
+      text-lg
+      font-bold
+      hover:scale-105
+      transition
+    "
+  >
+    Отправить ✨
+  </button>
+
+</form>
           <p className="text-center mb-6 text-lg">
             Подтвердите своё присутствие до 01.08.2026
           </p>
