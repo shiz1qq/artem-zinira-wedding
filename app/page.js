@@ -78,7 +78,12 @@ function PlaceCard({ emoji, title, time, link, color }) {
 export default function Home() {
   const [name, setName] = useState("");
   const [attendance, setAttendance] = useState("Смогу присутствовать");
-  const [loading, setLoading] = useState(false);
+
+const [events, setEvents] = useState([]);
+
+const [wishes, setWishes] = useState("");
+
+const [telegram, setTelegram] = useState("");
 
   async function sendRSVP() {
     if (!name) return;
@@ -140,7 +145,7 @@ ${attendance}
 
 };
   return (
-    <main className="snap-y snap-mandatory h-screen overflow-y-scroll bg-[#f5f1eb] text-[#2d2d2d]">
+   <main className="min-h-screen overflow-x-hidden"> bg-[#f5f1eb] text-[#2d2d2d]"
 
  
 {/* HERO */}
@@ -552,32 +557,45 @@ ${attendance}
 
   {/* EVENTS */}
 
-  <div className="bg-white rounded-3xl p-5 border">
+{/* EVENTS */}
 
-    <div className="font-bold mb-4 text-lg">
-      На каких мероприятиях вы будете?
-    </div>
+<div className="bg-white rounded-3xl p-5 border">
 
-    <label className="flex gap-3 mb-3">
-      <input type="checkbox" />
-      <span>Никах</span>
-    </label>
-
-    <label className="flex gap-3 mb-3">
-      <input type="checkbox" />
-      <span>ЗАГС</span>
-    </label>
-
-    <label className="flex gap-3">
-      <input type="checkbox" />
-      <span>Кафе</span>
-    </label>
-
+  <div className="font-bold mb-4 text-lg">
+    На каких мероприятиях вы будете?
   </div>
+
+  {["Никах", "ЗАГС", "Кафе"].map((item) => (
+
+    <label key={item} className="flex gap-3 mb-3 cursor-pointer">
+
+      <input
+        type="checkbox"
+        checked={events.includes(item)}
+        onChange={(e) => {
+
+          if (e.target.checked) {
+            setEvents([...events, item]);
+          } else {
+            setEvents(events.filter((ev) => ev !== item));
+          }
+
+        }}
+      />
+
+      <span>{item}</span>
+
+    </label>
+
+  ))}
+
+</div>
 
   {/* WISHES */}
 
   <textarea
+  value={wishes}
+  onChange={(e) => setWishes(e.target.value)}
     placeholder="Ваши пожелания для нас ✨"
     rows="4"
     className="
@@ -590,7 +608,20 @@ ${attendance}
       resize-none
     "
   />
-
+<input
+  type="text"
+  placeholder="Ваш Telegram или номер телефона"
+  value={telegram}
+  onChange={(e) => setTelegram(e.target.value)}
+  className="
+    w-full
+    p-4
+    rounded-2xl
+    border
+    outline-none
+    text-black
+  "
+/>
   <button
     type="submit"
     className="
@@ -609,25 +640,7 @@ ${attendance}
   </button>
 
 </form>
-          <p className="text-center mb-6 text-lg">
-            Подтвердите своё присутствие до 01.08.2026
-          </p>
-
-          <input
-            type="text"
-            placeholder="Ваше имя"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-5 rounded-2xl border text-xl mb-6"
-          />
-
-          <button
-            onClick={sendRSVP}
-            disabled={loading}
-            className="w-full bg-pink-500 hover:bg-pink-600 transition text-white py-5 rounded-2xl text-xl font-bold"
-          >
-            {loading ? "Отправляем..." : "Подтвердить присутствие"}
-          </button>
+        
         </motion.div>
       </section>
 
