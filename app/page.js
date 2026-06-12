@@ -348,7 +348,14 @@ transition={{
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ delay: 0.3 }}
-    className="mt-8 z-10"
+    className="
+  relative
+  z-10
+  mt-32
+  sm:mt-12
+  md:mt-0
+  px-6
+"
   >
 
     <div className="text-lg sm:text-2xl text-gray-500 tracking-[0.25em] uppercase">
@@ -356,9 +363,9 @@ transition={{
     </div>
 
     <h2 className="
-      text-5xl
-      sm:text-6xl
-      md:text-8xl
+     text-4xl
+sm:text-6xl
+md:text-8xl
       font-black
       leading-none
       mt-4
