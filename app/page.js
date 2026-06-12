@@ -197,17 +197,16 @@ ${telegram || "Не указан"}
 
 <motion.div
   initial={{ opacity: 0, x: -100, rotate: -15 }}
-  animate={{
-    opacity: 1,
-    x: 0,
-    rotate: [-8, -5, -8],
-    y: [0, -10, 0]
-  }}
-  transition={{
-    duration: 6,
-    repeat: Infinity,
-    ease: "easeInOut"
-  }}
+ animate={{
+  opacity: 1,
+  x: 0,
+  rotate: -8
+}}
+
+transition={{
+  duration: 1.2,
+  ease: "easeOut"
+}}
   whileHover={{
     scale: 1.05,
     rotate: -4
@@ -264,16 +263,15 @@ ${telegram || "Не указан"}
 <motion.div
   initial={{ opacity: 0, x: 100, rotate: 15 }}
   animate={{
-    opacity: 1,
-    x: 0,
-    rotate: [8, 4, 8],
-    y: [0, 12, 0]
-  }}
-  transition={{
-    duration: 7,
-    repeat: Infinity,
-    ease: "easeInOut"
-  }}
+  opacity: 1,
+  x: 0,
+  rotate: -8
+}}
+
+transition={{
+  duration: 1.2,
+  ease: "easeOut"
+}}
   whileHover={{
     scale: 1.05,
     rotate: 3
