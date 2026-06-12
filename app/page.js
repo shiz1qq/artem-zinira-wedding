@@ -197,43 +197,50 @@ ${telegram || "Не указан"}
 
 <motion.div
   initial={{ opacity: 0, x: -100, rotate: -15 }}
- animate={{
-  opacity: 1,
-  x: 0,
-  rotate: -8
-}}
-
-transition={{
-  duration: 1.2,
-  ease: "easeOut"
-}}
+  animate={{
+    opacity: 1,
+    x: 0,
+    rotate: -8
+  }}
+  transition={{
+    duration: 1.2,
+    ease: "easeOut"
+  }}
   whileHover={{
     scale: 1.05,
     rotate: -4
   }}
   className="
     absolute
-    left-1 sm:left-6 md:left-10
-    bottom-6 md:bottom-10
+    left-[-10px]
+    sm:left-6
+    md:left-10
+
+    bottom-32
+    sm:bottom-12
+    md:bottom-10
+
     z-20
-    cursor-pointer
+    pointer-events-none
   "
 >
 
-  <div className="
-    bg-white
-    p-2 sm:p-3
-    rounded-[28px]
-    sm:rounded-[35px]
-    shadow-2xl
-    rotate-[-8deg]
-  ">
+  <div
+    className="
+      bg-white
+      p-2 sm:p-3
+      rounded-[28px]
+      sm:rounded-[35px]
+      shadow-2xl
+      rotate-[-8deg]
+    "
+  >
 
     <img
       src="/groom.jpg"
       alt="Артем"
       className="
-        w-24
+        w-[110px]
         sm:w-36
         md:w-56
         rounded-[20px]
@@ -243,16 +250,17 @@ transition={{
 
   </div>
 
-  <div className="
-    absolute
-    -top-7
-    left-2
-    text-blue-500
-    text-xl
-    sm:text-3xl
-    font-black
-    rotate-[-8deg]
-  ">
+  <div
+    className="
+      absolute
+      -top-7
+      left-2
+      text-blue-500
+      font-black
+      text-xl
+      rotate-[-12deg]
+    "
+  >
     жених
   </div>
 
@@ -263,42 +271,73 @@ transition={{
 <motion.div
   initial={{ opacity: 0, x: 100, rotate: 15 }}
   animate={{
-  opacity: 1,
-  x: 0,
-  rotate: -8
-}}
-
-transition={{
-  duration: 1.2,
-  ease: "easeOut"
-}}
+    opacity: 1,
+    x: 0,
+    rotate: 8
+  }}
+  transition={{
+    duration: 1.2,
+    delay: 0.2,
+    ease: "easeOut"
+  }}
   whileHover={{
     scale: 1.05,
-    rotate: 3
+    rotate: 4
   }}
   className="
     absolute
-    right-1 sm:right-4 md:right-10
-    top-24 md:top-20
+    right-[-5px]
+    sm:right-6
+    md:right-10
+
+    top-12
+    sm:top-20
+    md:top-24
+
     z-20
-    cursor-pointer
+    pointer-events-none
   "
 >
 
-  <div className="absolute -top-7 right-1 text-pink-500 text-xl sm:text-3xl font-black rotate-[8deg]">
-    невеста
+  <div
+    className="
+      bg-transparent
+      p-2 sm:p-3
+      rounded-[28px]
+      sm:rounded-[35px]
+      shadow-2xl
+      rotate-[8deg]
+    "
+  >
+
+    <img
+      src="/bride.png"
+      alt="Зинира"
+      style={{
+}}
+      className="
+        w-[105px]
+        sm:w-36
+        md:w-56
+         drop-shadow-[0_15px_35px_rgba(0,0,0,0.25)]
+      "
+    />
+
   </div>
 
-  <img
-    src="/bride.png"
-    alt="Зинира"
+  <div
     className="
-      w-28
-      sm:w-40
-      md:w-64
-      drop-shadow-2xl
+      absolute
+      -top-7
+      right-0
+      text-pink-400
+      font-black
+      text-xl
+      rotate-[10deg]
     "
-  />
+  >
+    невеста
+  </div>
 
 </motion.div>
 
