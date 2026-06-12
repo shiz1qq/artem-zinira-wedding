@@ -173,7 +173,7 @@ ${telegram || "Не указан"}
 
 };
   return (
-   <main className="min-h-screen overflow-x-hidden"> bg-[#f5f1eb] text-[#2d2d2d]"
+   <main className="min-h-screen overflow-x-hidden">"
 
  
 {/* HERO */}
@@ -211,18 +211,19 @@ ${telegram || "Не указан"}
     rotate: -4
   }}
   className="
-    absolute
-    left-[-10px]
-    sm:left-6
-    md:left-10
+  absolute
 
-    bottom-32
-    sm:bottom-12
-    md:bottom-10
+  left-[-30px]
+  sm:left-6
+  md:left-10
 
-    z-20
-    pointer-events-none
-  "
+  bottom-52
+  sm:bottom-12
+  md:bottom-10
+
+  z-20
+  pointer-events-none
+"
 >
 
   <div
@@ -240,12 +241,10 @@ ${telegram || "Не указан"}
       src="/groom.jpg"
       alt="Артем"
       className="
-        w-[110px]
-        sm:w-36
-        md:w-56
-        rounded-[20px]
-        sm:rounded-[25px]
-      "
+  w-[90px]
+  sm:w-36
+  md:w-56
+"
     />
 
   </div>
@@ -285,18 +284,19 @@ ${telegram || "Не указан"}
     rotate: 4
   }}
   className="
-    absolute
-    right-[-5px]
-    sm:right-6
-    md:right-10
+  absolute
 
-    top-12
-    sm:top-20
-    md:top-24
+  right-[-25px]
+  sm:right-6
+  md:right-10
 
-    z-20
-    pointer-events-none
-  "
+  top-32
+  sm:top-20
+  md:top-24
+
+  z-20
+  pointer-events-none
+"
 >
 
   <div
@@ -315,12 +315,11 @@ ${telegram || "Не указан"}
       alt="Зинира"
       style={{
 }}
-      className="
-        w-[105px]
-        sm:w-36
-        md:w-56
-         drop-shadow-[0_15px_35px_rgba(0,0,0,0.25)]
-      "
+     className="
+  w-[90px]
+  sm:w-36
+  md:w-56
+"
     />
 
   </div>
