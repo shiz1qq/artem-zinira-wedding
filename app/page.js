@@ -118,30 +118,58 @@ const sendTelegram = async (e) => {
 
   e.preventDefault();
 
-  const TOKEN = process.env.NEXT_PUBLIC_BOT_TOKEN;
-  const CHAT_ID = process.env.NEXT_PUBLIC_CHAT_ID;
+  const BOT_TOKEN = "8735338461:AAHfK4-3N9S0tgpUBGudzOPz_Ru9w56sftQ";
+  const CHAT_ID = "1959903103";
 
   const text = `
-💌 Новое подтверждение
+💌 Новое подтверждение!
 
 👤 Имя: ${name}
 
-📍 Ответ:
+✅ Присутствие:
 ${attendance}
+
+📍 Мероприятия:
+${events.join(", ") || "Не выбрано"}
+
+✨ Пожелания:
+${wishes || "Нет"}
+
+📱 Telegram:
+${telegram || "Не указан"}
 `;
 
-  await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      chat_id: CHAT_ID,
-      text,
-    }),
-  });
+  try {
 
-  alert("Ваш ответ отправлен ✨");
+    await fetch(
+      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text,
+        }),
+      }
+    );
+
+    alert("✨ Ответ отправлен!");
+
+    setName("");
+    setAttendance("Смогу присутствовать");
+    setEvents([]);
+    setWishes("");
+    setTelegram("");
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Ошибка отправки 😢");
+
+  }
 
 };
   return (
