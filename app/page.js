@@ -173,7 +173,7 @@ ${telegram || "Не указан"}
 
 };
   return (
-   <main className="min-h-screen overflow-x-hidden">"
+   <main className="min-h-screen overflow-x-hidden">
 
  
 {/* HERO */}
@@ -240,7 +240,7 @@ ${telegram || "Не указан"}
     <img
       src="/groom.jpg"
       alt="Артем"
-      className="
+     className="
   w-[90px]
   sm:w-36
   md:w-56
