@@ -286,15 +286,15 @@ ${telegram || "Не указан"}
   className="
   absolute
 
-  right-[-25px]
-  sm:right-6
+  right-[-18px]
+  sm:right-4
   md:right-10
 
-  top-32
-  sm:top-20
-  md:top-24
+  top-44
+  sm:top-24
+  md:top-20
 
-  z-20
+  z-10
   pointer-events-none
 "
 >
@@ -311,16 +311,15 @@ ${telegram || "Не указан"}
   >
 
     <img
-      src="/bride.png"
-      alt="Зинира"
-      style={{
-}}
-     className="
-  w-[90px]
-  sm:w-36
-  md:w-56
-"
-    />
+  src="/bride.png"
+  alt="Зинира"
+  className="
+    w-[82px]
+    sm:w-36
+    md:w-56
+    drop-shadow-[0_15px_35px_rgba(0,0,0,0.18)]
+  "
+/>
 
   </div>
 
