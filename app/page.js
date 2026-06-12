@@ -249,10 +249,11 @@ ${telegram || "Не указан"}
 
   </div>
 
-  <div
-    className="
-      absolute
-      -top-7
+ <div className="
+  absolute
+  -top-8
+  left-0
+  z-30
       left-2
       text-blue-500
       font-black
@@ -323,10 +324,11 @@ ${telegram || "Не указан"}
 
   </div>
 
-  <div
-    className="
-      absolute
-      -top-7
+  <div className="
+  absolute
+  -top-8
+  right-0
+  z-30
       right-0
       text-pink-400
       font-black
