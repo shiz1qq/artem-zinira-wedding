@@ -340,7 +340,7 @@ ${attendance}
           <div className="space-y-6">
 
             <a
-              href="https://maps.google.com/?q=56.101116,54.219398"
+              href="https://yandex.ru/maps/-/CTqbQLOG"
               target="_blank"
               className="
                 block
@@ -361,13 +361,13 @@ ${attendance}
               </div>
 
               <div className="mt-4 text-[#74665d]">
-                Нефтекамск
+                Нефтекамск ул. Дзержинского, 11
               </div>
 
             </a>
 
             <a
-              href="https://maps.google.com/?q=56.090258,54.251406"
+              href="https://yandex.ru/maps/-/CTqbQZzB"
               target="_blank"
               className="
                 block
@@ -388,13 +388,13 @@ ${attendance}
               </div>
 
               <div className="mt-4 text-[#74665d]">
-                Нефтекамск
+                Нефтекамск Комсомольский просп., 28
               </div>
 
             </a>
 
             <a
-              href="https://maps.google.com/?q=56.101230,54.296862"
+              href="https://yandex.ru/maps/-/CTqbQ85L"
               target="_blank"
               className="
                 block
@@ -415,7 +415,7 @@ ${attendance}
               </div>
 
               <div className="mt-4 text-[#74665d]">
-                Нефтекамск
+                Нефтекамск Янаульская ул., 12,
               </div>
 
             </a>
