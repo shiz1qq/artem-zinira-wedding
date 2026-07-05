@@ -15,3 +15,14 @@ body {
   background: #f8f4ee;
   font-family: serif;
 }
+.title-font {
+  font-family: var(--font-cormorant);
+}
+
+.script-font {
+  font-family: var(--font-vibes);
+}
+
+.text-font {
+  font-family: var(--font-montserrat);
+}

@@ -5,11 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
 
-  /* DATE */
-
   const weddingDate = new Date("2026-08-14T15:00:00");
-
-  /* TIMER */
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -17,26 +13,40 @@ export default function Home() {
     minutes: 0,
   });
 
-  /* RSVP */
-
   const [name, setName] = useState("");
-  const [attendance, setAttendance] = useState("Смогу присутствовать");
-  const [telegram, setTelegram] = useState("");
-  const [wishes, setWishes] = useState("");
-
-  /* TIMER */
+  const [attendance, setAttendance] = useState(
+    "Смогу присутствовать"
+  );
 
   useEffect(() => {
 
     const interval = setInterval(() => {
 
       const now = new Date();
+
       const difference = weddingDate - now;
 
       setTimeLeft({
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
+        days: Math.max(
+          0,
+          Math.floor(
+            difference / (1000 * 60 * 60 * 24)
+          )
+        ),
+
+        hours: Math.max(
+          0,
+          Math.floor(
+            (difference / (1000 * 60 * 60)) % 24
+          )
+        ),
+
+        minutes: Math.max(
+          0,
+          Math.floor(
+            (difference / 1000 / 60) % 60
+          )
+        ),
       });
 
     }, 1000);
@@ -44,8 +54,6 @@ export default function Home() {
     return () => clearInterval(interval);
 
   }, []);
-
-  /* TELEGRAM */
 
   const sendTelegram = async (e) => {
 
@@ -55,19 +63,12 @@ export default function Home() {
     const CHAT_ID = "1959903103";
 
     const text = `
-💌 Новое подтверждение на свадьбу
+💌 Новое подтверждение
 
-👤 Имя:
-${name}
+👤 Имя: ${name}
 
 ✅ Ответ:
 ${attendance}
-
-📱 Telegram:
-${telegram || "не указан"}
-
-✨ Пожелания:
-${wishes || "нет"}
 `;
 
     try {
@@ -76,9 +77,11 @@ ${wishes || "нет"}
         `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
         {
           method: "POST",
+
           headers: {
             "Content-Type": "application/json",
           },
+
           body: JSON.stringify({
             chat_id: CHAT_ID,
             text,
@@ -86,11 +89,9 @@ ${wishes || "нет"}
         }
       );
 
-      alert("✨ Ответ отправлен!");
+      alert("Ответ отправлен ✨");
 
       setName("");
-      setTelegram("");
-      setWishes("");
 
     } catch (error) {
 
@@ -104,18 +105,12 @@ ${wishes || "нет"}
 
   return (
 
-    <main className="relative overflow-hidden bg-[#f8f4ee] text-[#2f2a26]">
+    <main className="relative overflow-hidden bg-[#f6f1ea] text-[#5e5148]">
 
-      {/* PAPER TEXTURE */}
+      {/* PAPER */}
 
       <div
-        className="
-          fixed
-          inset-0
-          opacity-[0.12]
-          pointer-events-none
-          z-0
-        "
+        className="absolute inset-0 opacity-20 pointer-events-none"
         style={{
           backgroundImage:
             "url('https://www.transparenttextures.com/patterns/paper-fibers.png')",
@@ -124,163 +119,183 @@ ${wishes || "нет"}
 
       {/* SIDE LINES */}
 
-      <div className="fixed left-4 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
-      <div className="fixed left-7 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
+      <div className="fixed left-4 top-0 h-full w-[1px] bg-[#ddd1c5]" />
+      <div className="fixed left-7 top-0 h-full w-[1px] bg-[#ddd1c5]" />
 
-      <div className="fixed right-4 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
-      <div className="fixed right-7 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
+      <div className="fixed right-4 top-0 h-full w-[1px] bg-[#ddd1c5]" />
+      <div className="fixed right-7 top-0 h-full w-[1px] bg-[#ddd1c5]" />
 
       {/* HERO */}
 
-      <section className="min-h-screen flex items-center justify-center px-6 py-20 relative z-10">
+      <section className="min-h-screen flex items-center justify-center px-6 py-24 relative z-10 overflow-hidden">
+
+        {/* DECOR */}
 
         <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{
+            y: [0, -15, 0],
+            rotate: [0, 2, 0],
+          }}
           transition={{
-            duration: 1.4,
-            ease: "easeOut",
+            duration: 7,
+            repeat: Infinity,
           }}
           className="
-            max-w-4xl
-            mx-auto
-            text-center
+            absolute
+            top-20
+            left-10
+            text-[#d8c4b2]
+            text-6xl
+            opacity-40
           "
         >
+          ✦
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="
-              uppercase
-              tracking-[0.5em]
-              text-[#9b938b]
-              text-sm
-              mb-8
-            "
-          >
-            Wedding invitation
-          </motion.div>
+        <motion.div
+          animate={{
+            y: [0, 10, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+          }}
+          className="
+            absolute
+            bottom-32
+            right-10
+            text-[#d8c4b2]
+            text-5xl
+            opacity-30
+          "
+        >
+          ❀
+        </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              delay: 0.5,
-              duration: 1,
-            }}
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 60,
+          }}
+
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            duration: 1.5,
+          }}
+
+          className="text-center max-w-5xl"
+        >
+
+          <div className="uppercase tracking-[0.45em] text-[#a79c91] text-xs sm:text-sm mb-10">
+
+            Мы женимся
+
+          </div>
+
+          {/* NAMES */}
+
+          <h1
             className="
-              text-6xl
-              sm:text-8xl
-              font-light
-              leading-tight
+              text-[72px]
+              sm:text-[140px]
+              leading-none
+              text-[#7b6a5d]
+              font-serif
             "
             style={{
-              fontFamily: "serif",
+              fontFamily: "'Great Vibes', cursive",
             }}
           >
 
             Артем
 
-            <span className="block text-[#c4a484] my-2">
+            <div className="text-[#c9b6a1] text-4xl sm:text-6xl my-2">
               &
-            </span>
+            </div>
 
             Зинира
 
-          </motion.h1>
+          </h1>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="
-              mt-12
-              text-lg
-              sm:text-2xl
-              leading-relaxed
-              max-w-2xl
-              mx-auto
-              text-[#5e5853]
-            "
-          >
+          <div className="w-32 h-[1px] bg-[#d7c7b7] mx-auto mt-10" />
+
+          {/* TEXT */}
+
+          <p className="mt-12 text-xl sm:text-3xl leading-relaxed max-w-3xl mx-auto text-[#74665d] font-light">
+
             С огромной радостью приглашаем вас
             разделить вместе с нами
             самый счастливый день нашей жизни
-          </motion.div>
+
+          </p>
 
           {/* DATE */}
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 }}
-            className="mt-20"
-          >
+          <div className="mt-20">
 
-            <div className="uppercase tracking-[0.4em] text-[#9b938b] text-sm mb-5">
-              дата свадьбы
+            <div className="uppercase tracking-[0.35em] text-[#a79c91] text-xs mb-4">
+
+              Дата свадьбы
+
             </div>
 
-            <div className="text-4xl sm:text-6xl font-light">
+            <div className="text-5xl sm:text-7xl">
+
               14 августа 2026
+
             </div>
 
-          </motion.div>
+          </div>
 
           {/* TIMER */}
 
           <div className="grid grid-cols-3 gap-4 mt-16">
 
-            {[
-              {
-                value: timeLeft.days,
-                label: "дней",
-              },
+            <div className="bg-white/70 backdrop-blur-sm rounded-[30px] p-6 shadow-xl">
 
-              {
-                value: timeLeft.hours,
-                label: "часов",
-              },
+              <div className="text-4xl sm:text-5xl">
+                {timeLeft.days}
+              </div>
 
-              {
-                value: timeLeft.minutes,
-                label: "минут",
-              },
+              <div className="uppercase tracking-[0.2em] text-xs mt-2 text-[#a79c91]">
 
-            ].map((item, index) => (
+                дней
 
-              <motion.div
-                key={index}
-                whileHover={{
-                  y: -8,
-                }}
-                transition={{
-                  duration: 0.3,
-                }}
-                className="
-                  bg-white/70
-                  backdrop-blur-sm
-                  rounded-[30px]
-                  p-6
-                  shadow-xl
-                  border
-                  border-[#ebe1d5]
-                "
-              >
+              </div>
 
-                <div className="text-4xl sm:text-5xl font-light">
-                  {item.value}
-                </div>
+            </div>
 
-                <div className="mt-2 text-[#9b938b] uppercase tracking-[0.2em] text-xs">
-                  {item.label}
-                </div>
+            <div className="bg-white/70 backdrop-blur-sm rounded-[30px] p-6 shadow-xl">
 
-              </motion.div>
+              <div className="text-4xl sm:text-5xl">
+                {timeLeft.hours}
+              </div>
 
-            ))}
+              <div className="uppercase tracking-[0.2em] text-xs mt-2 text-[#a79c91]">
+
+                часов
+
+              </div>
+
+            </div>
+
+            <div className="bg-white/70 backdrop-blur-sm rounded-[30px] p-6 shadow-xl">
+
+              <div className="text-4xl sm:text-5xl">
+                {timeLeft.minutes}
+              </div>
+
+              <div className="uppercase tracking-[0.2em] text-xs mt-2 text-[#a79c91]">
+
+                минут
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -290,138 +305,120 @@ ${wishes || "нет"}
 
       {/* PLAN */}
 
-      <section className="relative z-10 px-6 pb-24">
+      <section className="px-6 pb-24 relative z-10">
 
         <motion.div
-          initial={{ opacity: 0, y: 70 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2 }}
+          initial={{
+            opacity: 0,
+            y: 40,
+          }}
+
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            duration: 1,
+          }}
+
           className="
-            max-w-5xl
+            max-w-4xl
             mx-auto
             bg-white/70
-            backdrop-blur-sm
             rounded-[40px]
-            border
-            border-[#ebe1d5]
             p-8
-            sm:p-16
-            shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+            sm:p-14
+            shadow-2xl
           "
         >
 
-          <h2
-            className="
-              text-center
-              text-5xl
-              font-light
-              mb-16
-            "
-          >
+          <h2 className="text-center text-5xl mb-14">
             План дня
           </h2>
 
-          <div className="space-y-8">
+          <div className="space-y-6">
 
-            {/* NIKAH */}
-
-            <motion.a
+            <a
               href="https://maps.google.com/?q=56.101116,54.219398"
               target="_blank"
-              whileHover={{
-                scale: 1.02,
-              }}
               className="
                 block
-                bg-[#f8f4ee]
-                rounded-[30px]
+                bg-[#f7f2eb]
                 p-8
+                rounded-[30px]
+                hover:scale-[1.02]
                 transition
               "
             >
 
-              <div className="text-[#b79a7f] uppercase tracking-[0.3em] text-sm">
+              <div className="uppercase tracking-[0.3em] text-xs text-[#b29d88]">
                 15:00
               </div>
 
-              <div className="text-3xl mt-3">
+              <div className="text-4xl mt-3">
                 🕌 Никах
               </div>
 
-              <div className="mt-4 text-[#5e5853] leading-relaxed">
+              <div className="mt-4 text-[#74665d]">
                 Нефтекамск
-                <br />
-                Мечеть
               </div>
 
-            </motion.a>
+            </a>
 
-            {/* ZAGS */}
-
-            <motion.a
+            <a
               href="https://maps.google.com/?q=56.090258,54.251406"
               target="_blank"
-              whileHover={{
-                scale: 1.02,
-              }}
               className="
                 block
-                bg-[#f8f4ee]
-                rounded-[30px]
+                bg-[#f7f2eb]
                 p-8
+                rounded-[30px]
+                hover:scale-[1.02]
                 transition
               "
             >
 
-              <div className="text-[#b79a7f] uppercase tracking-[0.3em] text-sm">
+              <div className="uppercase tracking-[0.3em] text-xs text-[#b29d88]">
                 17:00
               </div>
 
-              <div className="text-3xl mt-3">
+              <div className="text-4xl mt-3">
                 🏛 ЗАГС
               </div>
 
-              <div className="mt-4 text-[#5e5853] leading-relaxed">
+              <div className="mt-4 text-[#74665d]">
                 Нефтекамск
-                <br />
-                Дворец бракосочетания
               </div>
 
-            </motion.a>
+            </a>
 
-            {/* CAFE */}
-
-            <motion.a
+            <a
               href="https://maps.google.com/?q=56.101230,54.296862"
               target="_blank"
-              whileHover={{
-                scale: 1.02,
-              }}
               className="
                 block
-                bg-[#f8f4ee]
-                rounded-[30px]
+                bg-[#f7f2eb]
                 p-8
+                rounded-[30px]
+                hover:scale-[1.02]
                 transition
               "
             >
 
-              <div className="text-[#b79a7f] uppercase tracking-[0.3em] text-sm">
+              <div className="uppercase tracking-[0.3em] text-xs text-[#b29d88]">
                 18:00
               </div>
 
-              <div className="text-3xl mt-3">
+              <div className="text-4xl mt-3">
                 🍷 Кафе
               </div>
 
-              <div className="mt-4 text-[#5e5853] leading-relaxed">
+              <div className="mt-4 text-[#74665d]">
                 Нефтекамск
-                <br />
-                Банкетный зал
               </div>
 
-            </motion.a>
+            </a>
 
           </div>
 
@@ -431,35 +428,35 @@ ${wishes || "нет"}
 
       {/* RSVP */}
 
-      <section className="relative z-10 px-6 pb-32">
+      <section className="px-6 pb-32 relative z-10">
 
         <motion.div
-          initial={{ opacity: 0, y: 70 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2 }}
+          initial={{
+            opacity: 0,
+            y: 40,
+          }}
+
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+
+          transition={{
+            duration: 1,
+          }}
+
           className="
             max-w-3xl
             mx-auto
             bg-white/70
-            backdrop-blur-sm
             rounded-[40px]
-            border
-            border-[#ebe1d5]
             p-8
-            sm:p-16
-            shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+            sm:p-14
+            shadow-2xl
           "
         >
 
-          <h2
-            className="
-              text-center
-              text-5xl
-              font-light
-              mb-12
-            "
-          >
+          <h2 className="text-center text-5xl mb-10">
             RSVP
           </h2>
 
@@ -472,46 +469,32 @@ ${wishes || "нет"}
               type="text"
               placeholder="Ваше имя"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) =>
+                setName(e.target.value)
+              }
               required
               className="
                 w-full
                 p-5
                 rounded-2xl
                 border
-                border-[#ddd2c3]
-                bg-white
                 outline-none
-              "
-            />
-
-            <input
-              type="text"
-              placeholder="@telegram"
-              value={telegram}
-              onChange={(e) => setTelegram(e.target.value)}
-              className="
-                w-full
-                p-5
-                rounded-2xl
-                border
-                border-[#ddd2c3]
                 bg-white
-                outline-none
               "
             />
 
             <select
               value={attendance}
-              onChange={(e) => setAttendance(e.target.value)}
+              onChange={(e) =>
+                setAttendance(e.target.value)
+              }
               className="
                 w-full
                 p-5
                 rounded-2xl
                 border
-                border-[#ddd2c3]
-                bg-white
                 outline-none
+                bg-white
               "
             >
 
@@ -525,37 +508,22 @@ ${wishes || "нет"}
 
             </select>
 
-            <textarea
-              rows="5"
-              placeholder="Ваши пожелания ✨"
-              value={wishes}
-              onChange={(e) => setWishes(e.target.value)}
-              className="
-                w-full
-                p-5
-                rounded-2xl
-                border
-                border-[#ddd2c3]
-                bg-white
-                outline-none
-                resize-none
-              "
-            />
-
             <button
               type="submit"
               className="
                 w-full
+                bg-[#bfa58c]
+                hover:bg-[#ae947c]
+                text-white
                 py-5
                 rounded-2xl
-                bg-[#c4a484]
-                text-white
                 text-lg
-                hover:scale-[1.02]
                 transition
               "
             >
+
               Подтвердить присутствие ✨
+
             </button>
 
           </form>
