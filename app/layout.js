@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Wedding",
-  description: "Wedding Invite",
+  description: "Wedding invitation",
 };
 
 export default function RootLayout({ children }) {

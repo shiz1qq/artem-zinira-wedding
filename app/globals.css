@@ -1,46 +1,17 @@
 @import "tailwindcss";
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: #f8f5ef;
+  padding: 0;
   overflow-x: hidden;
-  font-family: Arial, sans-serif;
-}
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  overflow-x: hidden;
-  background: #f5f1eb;
-}
-
-section {
-  overflow: hidden;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  overflow-x: hidden;
-  background: #f5f1eb;
-}
-
-section {
-  overflow: hidden;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
+  background: #f8f4ee;
+  font-family: serif;
 }

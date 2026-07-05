@@ -1,753 +1,571 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Tilt from "react-parallax-tilt";
+import { useEffect, useState } from "react";
 
-const TOKEN = "8735338461:AAHfK4-3N9S0tgpUBGudzOPz_Ru9w56sftQ";
-const CHAT_ID = "1959903103";
+export default function Home() {
 
-function Countdown() {
-  const weddingDate = new Date("2026-08-14T00:00:00").getTime();
-  const [timeLeft, setTimeLeft] = useState({});
+  /* DATE */
+
+  const weddingDate = new Date("2026-08-14T15:00:00");
+
+  /* TIMER */
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+  });
+
+  /* RSVP */
+
+  const [name, setName] = useState("");
+  const [attendance, setAttendance] = useState("Смогу присутствовать");
+  const [telegram, setTelegram] = useState("");
+  const [wishes, setWishes] = useState("");
+
+  /* TIMER */
 
   useEffect(() => {
+
     const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = weddingDate - now;
+
+      const now = new Date();
+      const difference = weddingDate - now;
 
       setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((distance / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((distance / (1000 * 60)) % 60),
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
       });
+
     }, 1000);
 
     return () => clearInterval(interval);
+
   }, []);
 
-  return (
-    <div className="flex gap-4 justify-center mt-6 text-center">
-      <div className="bg-white/70 px-5 py-3 rounded-3xl shadow">
-        <div className="text-3xl font-bold text-pink-500">
-          {timeLeft.days}
-        </div>
-        <div className="text-sm">дней</div>
-      </div>
+  /* TELEGRAM */
 
-      <div className="bg-white/70 px-5 py-3 rounded-3xl shadow">
-        <div className="text-3xl font-bold text-pink-500">
-          {timeLeft.hours}
-        </div>
-        <div className="text-sm">часов</div>
-      </div>
+  const sendTelegram = async (e) => {
 
-      <div className="bg-white/70 px-5 py-3 rounded-3xl shadow">
-        <div className="text-3xl font-bold text-pink-500">
-          {timeLeft.minutes}
-        </div>
-        <div className="text-sm">минут</div>
-      </div>
-    </div>
-  );
-}
+    e.preventDefault();
 
-function PlaceCard({ emoji, title, time, link, color }) {
-  return (
-    <Tilt tiltMaxAngleX={8} tiltMaxAngleY={8}>
-      <motion.a
-        href={link}
-        target="_blank"
-        whileHover={{ scale: 1.03 }}
-        className={`block rounded-[35px] p-6 text-white shadow-2xl ${color}`}
-      >
-        <div className="text-5xl mb-3">{emoji}</div>
+    const BOT_TOKEN = "8735338461:AAHfK4-3N9S0tgpUBGudzOPz_Ru9w56sftQ";
+    const CHAT_ID = "1959903103";
 
-        <h3 className="text-3xl font-black mb-2">{title}</h3>
+    const text = `
+💌 Новое подтверждение на свадьбу
 
-        <p className="text-xl opacity-90 mb-4">{time}</p>
+👤 Имя:
+${name}
 
-        <div className="bg-white text-black inline-block px-4 py-2 rounded-full text-sm font-bold">
-          Открыть маршрут
-        </div>
-      </motion.a>
-    </Tilt>
-  );
-}
-
-export default function Home() {
-  const [name, setName] = useState("");
-  const [attendance, setAttendance] = useState("Смогу присутствовать");
-
-const [events, setEvents] = useState([]);
-
-const [wishes, setWishes] = useState("");
-
-const [telegram, setTelegram] = useState("");
-
-  async function sendRSVP() {
-    if (!name) return;
-
-    setLoading(true);
-
-   const text = `
-💌 Новое подтверждение
-
-👤 Имя: ${name}
-
-📍 Ответ:
+✅ Ответ:
 ${attendance}
-`;
-
-    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text,
-      }),
-    });
-
-    setLoading(false);
-    alert("Спасибо! Мы вас ждем 💖");
-    setName("");
-  }
-const sendTelegram = async (e) => {
-
-  e.preventDefault();
-
-  const BOT_TOKEN = "8735338461:AAHfK4-3N9S0tgpUBGudzOPz_Ru9w56sftQ";
-  const CHAT_ID = "1959903103";
-
-  const text = `
-💌 Новое подтверждение!
-
-👤 Имя: ${name}
-
-✅ Присутствие:
-${attendance}
-
-📍 Мероприятия:
-${events.join(", ") || "Не выбрано"}
-
-✨ Пожелания:
-${wishes || "Нет"}
 
 📱 Telegram:
-${telegram || "Не указан"}
+${telegram || "не указан"}
+
+✨ Пожелания:
+${wishes || "нет"}
 `;
 
-  try {
+    try {
 
-    await fetch(
-      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text,
-        }),
-      }
-    );
+      await fetch(
+        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text,
+          }),
+        }
+      );
 
-    alert("✨ Ответ отправлен!");
+      alert("✨ Ответ отправлен!");
 
-    setName("");
-    setAttendance("Смогу присутствовать");
-    setEvents([]);
-    setWishes("");
-    setTelegram("");
+      setName("");
+      setTelegram("");
+      setWishes("");
 
-  } catch (error) {
+    } catch (error) {
 
-    console.error(error);
+      console.error(error);
 
-    alert("Ошибка отправки 😢");
+      alert("Ошибка отправки 😢");
 
-  }
+    }
 
-};
+  };
+
   return (
-   <main className="min-h-screen overflow-x-hidden">
 
- 
-{/* HERO */}
+    <main className="relative overflow-hidden bg-[#f8f4ee] text-[#2f2a26]">
 
-<section className="snap-start min-h-screen relative overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 text-center bg-[#f5f1eb]">
+      {/* PAPER TEXTURE */}
 
-  {/* DECOR */}
+      <div
+        className="
+          fixed
+          inset-0
+          opacity-[0.12]
+          pointer-events-none
+          z-0
+        "
+        style={{
+          backgroundImage:
+            "url('https://www.transparenttextures.com/patterns/paper-fibers.png')",
+        }}
+      />
 
-  <div className="absolute top-8 left-4 sm:left-10 text-pink-400 text-4xl sm:text-6xl rotate-12">
-    ✦
-  </div>
+      {/* SIDE LINES */}
 
-  <div className="absolute bottom-20 right-4 sm:right-10 text-blue-400 text-4xl sm:text-5xl -rotate-12">
-    ✦
-  </div>
+      <div className="fixed left-4 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
+      <div className="fixed left-7 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
 
-  <div className="absolute top-40 right-10 sm:right-20 text-yellow-400 text-3xl sm:text-4xl">
-    ♥
-  </div>
-{/* GROOM */}
+      <div className="fixed right-4 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
+      <div className="fixed right-7 top-0 h-full w-[1px] bg-[#d8cfc3] z-0" />
 
-<motion.div
-  initial={{ opacity: 0, x: -100, rotate: -15 }}
-  animate={{
-    opacity: 1,
-    x: 0,
-    rotate: -8
-  }}
-  transition={{
-    duration: 1.2,
-    ease: "easeOut"
-  }}
-  whileHover={{
-    scale: 1.05,
-    rotate: -4
-  }}
-  className="
-  absolute
+      {/* HERO */}
 
-  left-[-30px]
-  sm:left-6
-  md:left-10
+      <section className="min-h-screen flex items-center justify-center px-6 py-20 relative z-10">
 
-  bottom-52
-  sm:bottom-12
-  md:bottom-10
+        <motion.div
+          initial={{ opacity: 0, y: 80 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 1.4,
+            ease: "easeOut",
+          }}
+          className="
+            max-w-4xl
+            mx-auto
+            text-center
+          "
+        >
 
-  z-20
-  pointer-events-none
-"
->
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="
+              uppercase
+              tracking-[0.5em]
+              text-[#9b938b]
+              text-sm
+              mb-8
+            "
+          >
+            Wedding invitation
+          </motion.div>
 
-  <div
-    className="
-      bg-white
-      p-2 sm:p-3
-      rounded-[28px]
-      sm:rounded-[35px]
-      shadow-2xl
-      rotate-[-8deg]
-    "
-  >
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              delay: 0.5,
+              duration: 1,
+            }}
+            className="
+              text-6xl
+              sm:text-8xl
+              font-light
+              leading-tight
+            "
+            style={{
+              fontFamily: "serif",
+            }}
+          >
 
-    <img
-      src="/groom.jpg"
-      alt="Артем"
-     className="
-  w-[90px]
-  sm:w-36
-  md:w-56
-"
-    />
+            Артем
 
-  </div>
+            <span className="block text-[#c4a484] my-2">
+              &
+            </span>
 
- <div className="
-  absolute
-  -top-8
-  left-0
-  z-30
-      left-2
-      text-blue-500
-      font-black
-      text-xl
-      rotate-[-12deg]
-    "
-  >
-    жених
-  </div>
+            Зинира
 
-</motion.div>
- 
- {/* BRIDE */}
+          </motion.h1>
 
-<motion.div
-  initial={{ opacity: 0, x: 100, rotate: 15 }}
-  animate={{
-    opacity: 1,
-    x: 0,
-    rotate: 8
-  }}
-  transition={{
-    duration: 1.2,
-    delay: 0.2,
-    ease: "easeOut"
-  }}
-  whileHover={{
-    scale: 1.05,
-    rotate: 4
-  }}
-  className="
-  absolute
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+            className="
+              mt-12
+              text-lg
+              sm:text-2xl
+              leading-relaxed
+              max-w-2xl
+              mx-auto
+              text-[#5e5853]
+            "
+          >
+            С огромной радостью приглашаем вас
+            разделить вместе с нами
+            самый счастливый день нашей жизни
+          </motion.div>
 
-  right-[-18px]
-  sm:right-4
-  md:right-10
+          {/* DATE */}
 
-  top-44
-  sm:top-24
-  md:top-20
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="mt-20"
+          >
 
-  z-10
-  pointer-events-none
-"
->
+            <div className="uppercase tracking-[0.4em] text-[#9b938b] text-sm mb-5">
+              дата свадьбы
+            </div>
 
-  <div
-    className="
-      bg-transparent
-      p-2 sm:p-3
-      rounded-[28px]
-      sm:rounded-[35px]
-      shadow-2xl
-      rotate-[8deg]
-    "
-  >
+            <div className="text-4xl sm:text-6xl font-light">
+              14 августа 2026
+            </div>
 
-    <img
-  src="/bride.png"
-  alt="Зинира"
-  className="
-    w-[82px]
-    sm:w-36
-    md:w-56
-    drop-shadow-[0_15px_35px_rgba(0,0,0,0.18)]
-  "
-/>
+          </motion.div>
 
-  </div>
+          {/* TIMER */}
 
-  <div className="
-  absolute
-  -top-8
-  right-0
-  z-30
-      right-0
-      text-pink-400
-      font-black
-      text-xl
-      rotate-[10deg]
-    "
-  >
-    невеста
-  </div>
+          <div className="grid grid-cols-3 gap-4 mt-16">
 
-</motion.div>
+            {[
+              {
+                value: timeLeft.days,
+                label: "дней",
+              },
 
-  {/* TEXT */}
+              {
+                value: timeLeft.hours,
+                label: "часов",
+              },
 
-  <motion.h1
-    initial={{ opacity: 0, y: 40 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1 }}
-    className="
-      text-4xl
-      sm:text-5xl
-      md:text-8xl
-      font-black
-      leading-tight
-      z-10
-      mt-20
-    "
-  >
-    <span className="text-blue-500">Мы</span>{" "}
-    <span className="text-pink-500">женимся!</span>
-  </motion.h1>
+              {
+                value: timeLeft.minutes,
+                label: "минут",
+              },
 
-  <motion.p
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ delay: 0.5 }}
-    className="
-      mt-6
-      text-base
-      sm:text-lg
-      md:text-2xl
-      max-w-2xl
-      leading-relaxed
-      z-10
-      px-4
-    "
-  >
-    Дорогие и близкие!
-    <br />
-    Приглашаем разделить этот особенный день вместе с нами
-  </motion.p>
+            ].map((item, index) => (
 
-  {/* NAMES */}
+              <motion.div
+                key={index}
+                whileHover={{
+                  y: -8,
+                }}
+                transition={{
+                  duration: 0.3,
+                }}
+                className="
+                  bg-white/70
+                  backdrop-blur-sm
+                  rounded-[30px]
+                  p-6
+                  shadow-xl
+                  border
+                  border-[#ebe1d5]
+                "
+              >
 
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay: 0.3 }}
-    className="
-  relative
-  z-10
-  mt-32
-  sm:mt-12
-  md:mt-0
-  px-6
-"
-  >
+                <div className="text-4xl sm:text-5xl font-light">
+                  {item.value}
+                </div>
 
-    <div className="text-lg sm:text-2xl text-gray-500 tracking-[0.25em] uppercase">
-      wedding day
-    </div>
+                <div className="mt-2 text-[#9b938b] uppercase tracking-[0.2em] text-xs">
+                  {item.label}
+                </div>
 
-    <h2 className="
-     text-4xl
-sm:text-6xl
-md:text-8xl
-      font-black
-      leading-none
-      mt-4
-    ">
+              </motion.div>
 
-      <span className="text-blue-500 block rotate-[-2deg]">
-        Артем
-      </span>
+            ))}
 
-      <span className="text-pink-400 text-4xl sm:text-5xl md:text-7xl block my-2">
-        &
-      </span>
+          </div>
 
-      <span className="text-pink-500 block rotate-[2deg]">
-        Зинира
-      </span>
+        </motion.div>
 
-    </h2>
-
-  </motion.div>
-
-  {/* DATE */}
-
-  <div className="
-    mt-8
-    text-3xl
-    sm:text-4xl
-    md:text-5xl
-    font-black
-    text-pink-500
-    z-10
-  ">
-    14 августа 2026
-  </div>
-
-  <Countdown />
-
-</section>
-
-{/* NAMES */}
-
-<section className="snap-start min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
-
-  <div className="absolute top-20 left-10 text-pink-400 text-6xl rotate-12">
-    ♥
-  </div>
-
-  <div className="absolute bottom-20 right-10 text-blue-400 text-5xl -rotate-12">
-    ✦
-  </div>
-
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 1 }}
-    className="text-center"
-  >
-
-    <div className="text-2xl md:text-3xl text-gray-500 mb-6 tracking-[0.3em] uppercase">
-      wedding day
-    </div>
-
-    <h2 className="text-6xl md:text-9xl font-black leading-none">
-
-      <span className="text-blue-500 block rotate-[-2deg]">
-        Артем
-      </span>
-
-      <span className="text-pink-400 text-5xl md:text-7xl block my-4">
-        &
-      </span>
-
-      <span className="text-pink-500 block rotate-[2deg]">
-        Зинира
-      </span>
-
-    </h2>
-
-    <p className="mt-10 text-xl md:text-2xl text-gray-600 max-w-xl leading-relaxed">
-      Один день.
-      <br />
-      Одна история.
-      <br />
-      И целая жизнь впереди ✨
-    </p>
-
-  </motion.div>
-
-</section>
+      </section>
 
       {/* PLAN */}
 
-      <section className="snap-start min-h-screen px-6 py-24">
-
-        <h2 className="text-5xl font-black text-center mb-16">
-          План дня
-        </h2>
-
-        <div className="max-w-3xl mx-auto flex flex-col gap-8">
-
-          <PlaceCard
-            emoji="🕌"
-            title="Никах"
-            time="15:00"
-            color="bg-pink-400"
-            link="https://yandex.ru/maps/?pt=54.219398,56.101116&z=17&l=map"
-          />
-
-          <PlaceCard
-            emoji="🏛"
-            title="ЗАГС"
-            time="17:00"
-            color="bg-blue-400"
-            link="https://yandex.ru/maps/?pt=54.251406,56.090258&z=17&l=map"
-          />
-
-          <PlaceCard
-            emoji="🍽"
-            title="Кафе"
-            time="18:00"
-            color="bg-green-400"
-            link="https://yandex.ru/maps/?pt=54.296862,56.101230&z=17&l=map"
-          />
-
-        </div>
-      </section>
-
-      {/* DRESS CODE */}
-
-      <section className="snap-start min-h-screen flex items-center justify-center px-6">
+      <section className="relative z-10 px-6 pb-24">
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          className="bg-white/70 rounded-[40px] p-10 max-w-2xl shadow-2xl"
-        >
-          <h2 className="text-5xl font-black text-blue-500 mb-8">
-            какой дресс-код?
-          </h2>
-
-          <p className="text-2xl leading-relaxed">
-            Никаких рамок, только красивые образы.
-            <br />
-            <span className="text-pink-500 font-bold">
-              Белый цвет уже занят
-            </span>
-            , а яркие цвета и шорты — в заслуженном отпуске ✨
-          </p>
-        </motion.div>
-      </section>
-
-      {/* GIFTS */}
-
-      <section className="snap-start min-h-screen flex items-center justify-center px-6">
-
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 70 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="bg-white/70 rounded-[40px] p-10 max-w-2xl shadow-2xl text-center"
+          viewport={{ once: true }}
+          transition={{ duration: 1.2 }}
+          className="
+            max-w-5xl
+            mx-auto
+            bg-white/70
+            backdrop-blur-sm
+            rounded-[40px]
+            border
+            border-[#ebe1d5]
+            p-8
+            sm:p-16
+            shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+          "
         >
-          <h2 className="text-5xl font-black text-blue-500 mb-8">
-            что дарить?
+
+          <h2
+            className="
+              text-center
+              text-5xl
+              font-light
+              mb-16
+            "
+          >
+            План дня
           </h2>
 
-          <p className="text-2xl leading-relaxed">
-            Самым ценным подарком для нас станет вклад
-            в бюджет нашей молодой семьи 💖
-          </p>
+          <div className="space-y-8">
+
+            {/* NIKAH */}
+
+            <motion.a
+              href="https://maps.google.com/?q=56.101116,54.219398"
+              target="_blank"
+              whileHover={{
+                scale: 1.02,
+              }}
+              className="
+                block
+                bg-[#f8f4ee]
+                rounded-[30px]
+                p-8
+                transition
+              "
+            >
+
+              <div className="text-[#b79a7f] uppercase tracking-[0.3em] text-sm">
+                15:00
+              </div>
+
+              <div className="text-3xl mt-3">
+                🕌 Никах
+              </div>
+
+              <div className="mt-4 text-[#5e5853] leading-relaxed">
+                Нефтекамск
+                <br />
+                Мечеть
+              </div>
+
+            </motion.a>
+
+            {/* ZAGS */}
+
+            <motion.a
+              href="https://maps.google.com/?q=56.090258,54.251406"
+              target="_blank"
+              whileHover={{
+                scale: 1.02,
+              }}
+              className="
+                block
+                bg-[#f8f4ee]
+                rounded-[30px]
+                p-8
+                transition
+              "
+            >
+
+              <div className="text-[#b79a7f] uppercase tracking-[0.3em] text-sm">
+                17:00
+              </div>
+
+              <div className="text-3xl mt-3">
+                🏛 ЗАГС
+              </div>
+
+              <div className="mt-4 text-[#5e5853] leading-relaxed">
+                Нефтекамск
+                <br />
+                Дворец бракосочетания
+              </div>
+
+            </motion.a>
+
+            {/* CAFE */}
+
+            <motion.a
+              href="https://maps.google.com/?q=56.101230,54.296862"
+              target="_blank"
+              whileHover={{
+                scale: 1.02,
+              }}
+              className="
+                block
+                bg-[#f8f4ee]
+                rounded-[30px]
+                p-8
+                transition
+              "
+            >
+
+              <div className="text-[#b79a7f] uppercase tracking-[0.3em] text-sm">
+                18:00
+              </div>
+
+              <div className="text-3xl mt-3">
+                🍷 Кафе
+              </div>
+
+              <div className="mt-4 text-[#5e5853] leading-relaxed">
+                Нефтекамск
+                <br />
+                Банкетный зал
+              </div>
+
+            </motion.a>
+
+          </div>
+
         </motion.div>
+
       </section>
 
       {/* RSVP */}
 
-      <section className="snap-start min-h-screen flex items-center justify-center px-6">
+      <section className="relative z-10 px-6 pb-32">
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-[40px] p-10 shadow-2xl max-w-xl w-full"
+          initial={{ opacity: 0, y: 70 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2 }}
+          className="
+            max-w-3xl
+            mx-auto
+            bg-white/70
+            backdrop-blur-sm
+            rounded-[40px]
+            border
+            border-[#ebe1d5]
+            p-8
+            sm:p-16
+            shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+          "
         >
-          <h2 className="text-5xl font-black text-center mb-8">
+
+          <h2
+            className="
+              text-center
+              text-5xl
+              font-light
+              mb-12
+            "
+          >
             RSVP
           </h2>
- <form
-  onSubmit={sendTelegram}
-  className="space-y-5 mt-10"
->
 
-  <input
-    type="text"
-    placeholder="Ваше имя"
-    value={name}
-    onChange={(e) => setName(e.target.value)}
-    className="
-      w-full
-      p-4
-      rounded-2xl
-      border
-      outline-none
-      text-black
-    "
-    required
-  />
+          <form
+            onSubmit={sendTelegram}
+            className="space-y-5"
+          >
 
-  {/* ATTEND */}
+            <input
+              type="text"
+              placeholder="Ваше имя"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="
+                w-full
+                p-5
+                rounded-2xl
+                border
+                border-[#ddd2c3]
+                bg-white
+                outline-none
+              "
+            />
 
-  <select
-    value={attendance}
-    onChange={(e) => setAttendance(e.target.value)}
-    className="
-      w-full
-      p-4
-      rounded-2xl
-      border
-      outline-none
-      text-black
-    "
-  >
-    <option>Смогу присутствовать</option>
-    <option>К сожалению не смогу</option>
-  </select>
+            <input
+              type="text"
+              placeholder="@telegram"
+              value={telegram}
+              onChange={(e) => setTelegram(e.target.value)}
+              className="
+                w-full
+                p-5
+                rounded-2xl
+                border
+                border-[#ddd2c3]
+                bg-white
+                outline-none
+              "
+            />
 
-  {/* EVENTS */}
+            <select
+              value={attendance}
+              onChange={(e) => setAttendance(e.target.value)}
+              className="
+                w-full
+                p-5
+                rounded-2xl
+                border
+                border-[#ddd2c3]
+                bg-white
+                outline-none
+              "
+            >
 
-{/* EVENTS */}
+              <option>
+                Смогу присутствовать
+              </option>
 
-<div className="bg-white rounded-3xl p-5 border">
+              <option>
+                К сожалению не смогу
+              </option>
 
-  <div className="font-bold mb-4 text-lg">
-    На каких мероприятиях вы будете?
-  </div>
+            </select>
 
-  {["Никах", "ЗАГС", "Кафе"].map((item) => (
+            <textarea
+              rows="5"
+              placeholder="Ваши пожелания ✨"
+              value={wishes}
+              onChange={(e) => setWishes(e.target.value)}
+              className="
+                w-full
+                p-5
+                rounded-2xl
+                border
+                border-[#ddd2c3]
+                bg-white
+                outline-none
+                resize-none
+              "
+            />
 
-    <label key={item} className="flex gap-3 mb-3 cursor-pointer">
+            <button
+              type="submit"
+              className="
+                w-full
+                py-5
+                rounded-2xl
+                bg-[#c4a484]
+                text-white
+                text-lg
+                hover:scale-[1.02]
+                transition
+              "
+            >
+              Подтвердить присутствие ✨
+            </button>
 
-      <input
-        type="checkbox"
-        checked={events.includes(item)}
-        onChange={(e) => {
+          </form>
 
-          if (e.target.checked) {
-            setEvents([...events, item]);
-          } else {
-            setEvents(events.filter((ev) => ev !== item));
-          }
-
-        }}
-      />
-
-      <span>{item}</span>
-
-    </label>
-
-  ))}
-
-</div>
-
-  {/* WISHES */}
-
-  <textarea
-  value={wishes}
-  onChange={(e) => setWishes(e.target.value)}
-    placeholder="Ваши пожелания для нас ✨"
-    rows="4"
-    className="
-      w-full
-      p-4
-      rounded-2xl
-      border
-      outline-none
-      text-black
-      resize-none
-    "
-  />
-<input
-  type="text"
-  placeholder="Ваш Telegram или номер телефона"
-  value={telegram}
-  onChange={(e) => setTelegram(e.target.value)}
-  className="
-    w-full
-    p-4
-    rounded-2xl
-    border
-    outline-none
-    text-black
-  "
-/>
-  <button
-    type="submit"
-    className="
-      w-full
-      bg-black
-      text-white
-      py-4
-      rounded-2xl
-      text-lg
-      font-bold
-      hover:scale-105
-      transition
-    "
-  >
-    Отправить ✨
-  </button>
-
-</form>
-        
         </motion.div>
-      </section>
 
-      {/* CONTACT */}
-
-      <section className="snap-start min-h-screen flex items-center justify-center px-6">
-
-        <div className="text-center">
-
-          <h2 className="text-5xl font-black mb-10">
-            связь с нами
-          </h2>
-
-          <div className="flex flex-col gap-6 text-2xl">
-
-            <a
-              href="tel:89196036811"
-              className="bg-white px-8 py-5 rounded-full shadow-xl hover:scale-105 transition"
-            >
-              📞 8 (919) 603-68-11
-            </a>
-
-            <a
-              href="https://t.me/shizqw"
-              target="_blank"
-              className="bg-blue-500 text-white px-8 py-5 rounded-full shadow-xl hover:scale-105 transition"
-            >
-              Telegram: @shizqw
-            </a>
-
-          </div>
-
-        </div>
       </section>
 
     </main>
+
   );
+
 }
